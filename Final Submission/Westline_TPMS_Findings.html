@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Westline TPMS: Findings</title>
+<style>
+:root{--bg:#fbfbf9;--fg:#1d2330;--mut:#566070;--line:#d6dae0;--acc:#1f5f8b;--warn:#a4432b;--ok:#2f6b4f;--box:#f0f3f6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181f;--fg:#e6e9ee;--mut:#9aa4b2;--line:#2c3441;--acc:#6fb0dc;--warn:#e08a72;--ok:#7cc4a0;--box:#1b212b}}
+html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 Georgia,"Times New Roman",serif}
+main{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+h1{font-size:2rem;line-height:1.2;margin:0 0 .5rem}
+h2{font-size:1.4rem;margin:2.8rem 0 .6rem;padding-top:1rem;border-top:1px solid var(--line)}
+h3{font-size:1.1rem;margin:1.6rem 0 .3rem}
+p,li{max-width:42rem}
+.lede{color:var(--mut)}
+.box{background:var(--box);border-left:4px solid var(--acc);padding:.2rem 1rem;margin:1rem 0}
+.meta{font:15px/1.5 system-ui,sans-serif;color:var(--mut)}
+.meta b{color:var(--fg)}
+table{border-collapse:collapse;font:15px/1.4 system-ui,sans-serif;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:.4rem .5rem;text-align:left;vertical-align:top}
+.scroll{overflow-x:auto}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+<h1>What is happening with Westline's tyres</h1>
+<p class="lede">Findings from the Westline Carriers TPMS pack, 1 June to 15 July 2026. Each finding says what was done, what was found, how confident I am and what would change my mind.</p>
+
+<div class="box">
+<p><b>In short.</b> Half the fleet is running 8&ndash;10% under its cold pressure standard, and the pattern fits an inflation routine problem more than road damage. The daily alarms look like temperature moving all tyres together. The July failure showed hours of warning in the data, but the pack cannot support a "one day ahead" claim.</p>
+</div>
+
+<h2>Scope and limits</h2>
+<p>This report uses the five client documents (brief, data dictionary, fleet manager transcript, task sheet, inflation spec) and daily summary tables built from the TyreSense export. The raw exports, vehicle master, tyre register, tread-depth sheets and kilometre log were not available to me for this pass, so checks that need them are listed as open. The daily tables were built by averaging chunk-level statistics, so figures are approximate and good for comparing trucks, not for exact values.</p>
+
+<h2>Finding 1: three trucks run about 8&ndash;10% under standard when cold</h2>
+<p class="meta"><b>What I did.</b> Pressure rises when a tyre warms, so a fair comparison to the cold standard needs a cold tyre. On Sundays every truck is idle and the sensor temperature falls to about 28&deg;C, which meets the spec's definition of cold. I compared each truck's Sunday median pressure to its axle standard (115, 105, 100 PSI).</p>
+<div class="scroll">
+<table>
+<tr><th>Truck</th><th>Sunday cold pressure, share of standard</th><th>Group</th></tr>
+<tr><td>KA25AC1182</td><td>1.013</td><td>At standard</td></tr>
+<tr><td>KA22AG3391</td><td>1.010</td><td>At standard</td></tr>
+<tr><td>KA25AB4471</td><td>1.004</td><td>At standard</td></tr>
+<tr><td>KA48AF9054</td><td>0.935</td><td>Under</td></tr>
+<tr><td>KA25AE2016</td><td>0.924</td><td>Under</td></tr>
+<tr><td>KA22AD7730</td><td>0.899</td><td>Under</td></tr>
+</table>
+</div>
+<p><b>Why Sunday works.</b> The spec defines the standard as a cold pressure, measured before the vehicle has run or after it has stood for at least three hours. Gas pressure in a closed tyre follows absolute temperature, so a tyre that has been running reads higher than its cold pressure, and weekday TPMS readings cannot be compared with the standard directly. On Sundays the trucks stand idle, the sensor temperature falls to about 28&deg;C (near ambient), and the readings approximate cold pressure. Sunday logs also hold about a third of a weekday's rows, which fits sensors transmitting less while stationary. The test relies on the sensor temperature being near ambient, not on the calendar alone.</p>
+<p><b>Found.</b> The three trucks at standard cold are the same three whose weekday pressure ratio sits near 1.07&ndash;1.11. The three under standard show about 90 PSI on drive tyres, which matches the manager's "ninety, ninety-one". The separation is clean, with no overlap between groups.</p>
+<p class="meta"><b>Confidence.</b> High that the two groups exist. <b>Caveat:</b> KA48AF9054 reads 0.997 on 5 July, so it may have run that Sunday, and its 0.935 average includes that day. <b>Would change my mind:</b> evidence that Sunday readings are not cold (trucks running), or a gauge-versus-sensor offset that differs between trucks.</p>
+
+<h2>Finding 2: the likely cause is hot inflation, not leaks</h2>
+<p class="meta"><b>What I did.</b> I compared the manager's account of the depot routines with the physics. Belagavi inflates at 6 a.m. before departure (cold). Hubballi inflates after trucks return around 1 p.m. (hot). Air filled to 100 PSI in a tyre at 45&ndash;55&deg;C leaves roughly 90&ndash;93 PSI once it cools to 28&deg;C, because gas pressure follows absolute temperature.</p>
+<p><b>Found.</b> The size of the shortfall matches. A leak would show as a steady slide between fills (the spec allows about 3 PSI a month), but KA22AD7730's ratio stays flat at about 0.95 for ten days (9&ndash;19 June), then steps up on 20 June, which looks like a fill. The manager's belief that bad Hubballi roads cause leaks is not supported by this pattern.</p>
+<p class="meta"><b>Confidence.</b> Medium: consistent with the data, not proven. <b>Would change my mind:</b> fill steps appearing in the morning on the low trucks, or a downward drift between fills. I also cannot yet confirm which trucks are Hubballi's, because the vehicle master was not available.</p>
+
+<h2>Finding 3: the dual-tyre gap is a 14-day sawtooth</h2>
+<p><b>What I did.</b> I read the daily inner-versus-outer pressure gap for every dual pair over the full period, not just the largest values.</p>
+<p><b>Found.</b> On KA22AD7730's axle-5 right dual the gap grows by about 0.4&ndash;0.6 PSI a day and resets to about 1 PSI on 6 June, 20 June and 4 July: an exact 14-day cycle, all Saturdays. KA25AB4471 shows the same pattern (resets 18 June and 4 July). This fits the "every ten to fifteen days" inflation routine. The 11&ndash;12 PSI gap in early June is therefore best read as the end of an inflation cycle, not an unexplained tyre fault. The spec says both tyres of a dual pair must match, and the larger one carries extra load, so the gap still matters.</p>
+<p class="meta"><b>Confidence.</b> Medium-high on the pattern. <b>Open:</b> the 6 June reset happened mainly because the inner tyre fell about 10 PSI toward the outer one, which daily data cannot explain. Hourly data and the register's "re-fitted" entries would.</p>
+
+<h2>Finding 4: the "fourteen alarms every afternoon" look like temperature</h2>
+<p><b>What I did.</b> I reasoned from the physics first. Fourteen tyres do not puncture together; a common cause moves them together. A 15&ndash;20&deg;C afternoon cooling from rain changes pressure by about 5&ndash;6 PSI on every tyre, enough to trip a fixed cold-pressure alarm fleet-wide. Then I checked whether the fleet cooled.</p>
+<p><b>Found.</b> Weekly median sensor temperature fell about 3&ndash;6&deg;C from week 23 to week 24 on all trucks, at the monsoon onset. That alone moves pressure about 2%. It cannot explain KA22AD7730's roughly 10% fall in early June, because KA22AG3391 saw the same cooling and stayed flat. So weather and a separate truck-specific change are both present.</p>
+<p class="meta"><b>Confidence.</b> Low-medium for the afternoon alarms: this needs hourly data, and I cannot identify the Goa truck without the vehicle master. <b>Would change my mind:</b> alarms that fire on one tyre, or temperature that stays flat while pressure drops.</p>
+
+<h2>Finding 5: the July failure was not without warning, but not a day ahead</h2>
+<p><b>What I did.</b> I examined axle-5 right of KA25AC1182 on 10 and 11 July, using the paired outer tyre as the control.</p>
+<p><b>Found.</b> On 10 July inner and outer matched (median gap 0.6 PSI). On 11 July the inner tyre was already near 60 PSI at 10:00 and near 16 PSI by 14:00, while the outer stayed near 110 PSI. The manager says the driver felt the truck go heavy that morning and the tyre was finished by two o'clock. The truck belongs to the well-inflated group, consistent with a Belagavi-based truck. A paired-gap alert would have fired hours before the failure. The previous day was normal, so a one-day-ahead warning is not supported.</p>
+<p class="meta"><b>Confidence.</b> High on hours of warning, low on any day-ahead claim. <b>Would change my mind:</b> a slow decline visible on 10 July in the raw readings, or a confirmed time when the decline began. Note that WL-T2-5RI-0242 is a tyre serial under the data dictionary, not a sensor serial.</p>
+
+<h2>What not to trust in the pack</h2>
+<ul>
+<li><b>The vehicle ID.</b> KA25AB4471 and KA25B4471 overlap on 30 June and 1 July (28 slot-days). This looks like a typo in one export, and possibly a time-base mismatch between files. I treated them as one truck in all comparisons.</li>
+<li><b>The manager's account.</b> He attributes low pressure to leaks, cannot say which truck was rotated, and says the Goa truck's brake linings were changed in May. The brief tells us to treat him as one partial informant.</li>
+<li><b>Tread-depth coverage.</b> Only the Goa truck was inspected twice; two trucks were never inspected. Wear claims are not supportable.</li>
+<li><b>Aggregation.</b> The daily tables average chunk-level medians. Recompute from raw rows before quoting exact values.</li>
+<li><b>Missing from the pack.</b> Load records, how TyreSense sets its alerts, and hourly fill times.</li>
+</ul>
+
+<h2>Five questions for the fleet manager</h2>
+<ol>
+<li><b>What does the TyreSense alert logic fire on?</b> If it is a fixed cold-pressure threshold, the afternoon alarms are expected, and I would propose temperature-corrected and paired-comparison alerts instead.</li>
+<li><b>At what clock time and tyre temperature does each depot inflate?</b> This confirms or refutes the hot-inflation cause, and decides whether the fix is a procedure change.</li>
+<li><b>Which truck and which pair was rotated at the end of June, and on what date?</b> Sensor-to-position mapping may have changed; I would re-map before trusting any slot after that date.</li>
+<li><b>Did the driver report the "heavy" feeling to anyone before the failure?</b> This sets how much lead time an alert would have had in practice.</li>
+<li><b>Has the dial gauge ever been checked against a calibrated reference?</b> A biased gauge would shift every fill and every comparison with the sensors.</li>
+</ol>
+
+<h2>What I need to go further</h2>
+<p>The six TyreSense exports, the vehicle master, the tyre register and the daily kilometre log. With them I can test hot inflation by fill time, find the Goa truck's afternoon pattern, confirm the rotation and the ID typo, and fix the start of the 11 July decline.</p>
+</main>
+</body>
+</html>
